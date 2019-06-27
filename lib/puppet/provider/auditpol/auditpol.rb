@@ -1,11 +1,10 @@
 Puppet::Type.type(:auditpol).provide(:auditpol) do
+  confine osfamily: :windows
+  defaultfor osfamily: :windows
 
-  confine :osfamily => :windows
-  defaultfor :osfamily => :windows
+  commands auditpol: 'auditpol.exe'
 
-  commands :auditpol => 'auditpol.exe'
-
-  def initialize(value={})
+  def initialize(value = {})
     super(value)
     @property_flush = {}
   end
@@ -43,8 +42,7 @@ Puppet::Type.type(:auditpol).provide(:auditpol) do
     categories = auditpol('/get', '/category:*', '/r')
 
     # the drop(1) drops the header line
-    categories.split("\n").drop(1).collect do |line|
-
+    categories.split("\n").drop(1).map do |line|
       line_array = line.split(',')
       subcategory_name = line_array[2]
       subcategory_policy = line_array[4]
@@ -67,19 +65,18 @@ Puppet::Type.type(:auditpol).provide(:auditpol) do
         failure = 'disable'
       end
 
-      new(:name => subcategory_name,
-          :success => success,
-          :failure => failure)
+      new(name: subcategory_name,
+          success: success,
+          failure: failure)
     end
   end
 
   def self.prefetch(resources)
     policies = instances
     resources.keys.each do |name|
-      if provider = policies.find { |policy| policy.name == name }
+      if provider == policies.find { |policy| policy.name == name }
         resources[name].provider = provider
       end
     end
   end
-
 end
