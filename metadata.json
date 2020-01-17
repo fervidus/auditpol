@@ -22,7 +22,7 @@
     }
   ],
   "description": "This module is a type/provider to manage audit policies in\n    Windows via auditpol.exe.",
-  "pdk-version": "1.10.0",
-  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git#1.10.0",
-  "template-ref": "tags/1.10.0-0-gbba9ac3"
+  "pdk-version": "1.15.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#1.15.0",
+  "template-ref": "tags/1.15.0-0-g0bc522e"
 }
