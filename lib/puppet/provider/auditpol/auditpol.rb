@@ -74,7 +74,7 @@ Puppet::Type.type(:auditpol).provide(:auditpol) do
   def self.prefetch(resources)
     policies = instances
     resources.keys.each do |name|
-      if provider == policies.find { |policy| policy.name == name }
+      if (provider = policies.find { |policy| policy.name == name })
         resources[name].provider = provider
       end
     end
